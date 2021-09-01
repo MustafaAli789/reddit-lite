@@ -27,7 +27,7 @@ class MailService(val mailSender: JavaMailSender, val mailContentBuilder: MailCo
             mailSender.send(msgPreparator)
             logger.info("Activation email sent")
         } catch (e: MailException) {
-            throw SpringRedditException("Exception occurred when sending mail to ${notificationEmail.subject}")
+            throw SpringRedditException("Exception occurred when sending mail to ${notificationEmail.recipient}")
         }
     }
 

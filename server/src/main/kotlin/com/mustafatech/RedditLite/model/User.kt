@@ -8,6 +8,7 @@ import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotEmpty
 
 @Entity
+@Table(name = "users")
 @NoArgsConstructor
 data class User(
         @Id

@@ -1,6 +1,7 @@
 package com.mustafatech.RedditLite.service
 
 import com.mustafatech.RedditLite.dto.RegisterRequestDto
+import com.mustafatech.RedditLite.model.NotificationEmail
 import com.mustafatech.RedditLite.model.User
 import com.mustafatech.RedditLite.model.VerificationToken
 import com.mustafatech.RedditLite.repository.UserRepo
@@ -14,7 +15,8 @@ import java.util.*
 @Service
 class AuthService(val passEncoder: PasswordEncoder,
                   val userRepo: UserRepo,
-                  val verificationTokenRepository: VerificationTokenRepository) {
+                  val verificationTokenRepository: VerificationTokenRepository,
+val mailService: MailService) {
 
     @Transactional
     fun signup(registerRequestDto: RegisterRequestDto) {
@@ -26,6 +28,12 @@ class AuthService(val passEncoder: PasswordEncoder,
         userRepo.save(user)
 
         val token = generateVerificationToken(user)
+        mailService.sendMail(NotificationEmail(
+                "Please Activate your Account",
+                user.email,
+                "Thank you for signing up to RedditLite. Please click the link below to activate your account :" +
+                        "http://localhost:8080/api/auth/accountVerification/" + token
+        ))
     }
 
     // 60 min expiry time

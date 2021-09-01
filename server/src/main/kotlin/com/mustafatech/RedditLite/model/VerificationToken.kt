@@ -3,6 +3,7 @@ package com.mustafatech.RedditLite.model
 import java.time.Instant
 import javax.persistence.*
 
+@Entity
 data class VerificationToken(
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)

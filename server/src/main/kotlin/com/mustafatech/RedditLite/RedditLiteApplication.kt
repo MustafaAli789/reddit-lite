@@ -8,10 +8,17 @@ import org.springframework.mail.javamail.JavaMailSenderImpl
 
 @SpringBootApplication
 class RedditLiteApplication {
-	@Bean
-	fun javaMailSender(): JavaMailSender {
-		return JavaMailSenderImpl()
-	}
+//	@Bean
+//	fun javaMailSender(): JavaMailSender {
+//		val mailSender = JavaMailSenderImpl()
+//		mailSender.host = "s***REMOVED***";
+//		mailSender.port = 25;
+//		mailSender.protocol = "SMTP"
+//
+//		mailSender.username = "***REMOVED***";
+//		mailSender.password = "***REMOVED***";
+//		return JavaMailSenderImpl()
+//	}
 }
 
 
