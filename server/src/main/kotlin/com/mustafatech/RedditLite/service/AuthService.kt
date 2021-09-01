@@ -1,6 +1,7 @@
 package com.mustafatech.RedditLite.service
 
 import com.mustafatech.RedditLite.dto.RegisterRequestDto
+import com.mustafatech.RedditLite.exception.SpringRedditException
 import com.mustafatech.RedditLite.model.NotificationEmail
 import com.mustafatech.RedditLite.model.User
 import com.mustafatech.RedditLite.model.VerificationToken
@@ -45,6 +46,19 @@ val mailService: MailService) {
                 Date(System.currentTimeMillis() + 60*60*1000).toInstant())
         verificationTokenRepository.save(verificationToken)
         return tokenVal
+    }
+
+    fun verifyAccount(token: String) {
+        val verToken = verificationTokenRepository.findByToken(token)?: throw SpringRedditException("Invalid Token")
+        fetchUserAndEnable(verToken)
+    }
+
+    @Transactional
+    fun fetchUserAndEnable(verToken: VerificationToken) {
+        val username = verToken.user.username
+        val user = userRepo.findByUsername(username)?: throw SpringRedditException("User with name $username not found")
+        user.enabled = true
+        userRepo.save(user)
     }
 
 }
