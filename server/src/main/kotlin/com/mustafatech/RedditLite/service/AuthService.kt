@@ -47,15 +47,15 @@ class AuthService(val passEncoder: PasswordEncoder,
 
     fun login(loginData: LoginRequestDto, servletPath: String): AuthenticationResponseDto {
         try {
-            val authentication = authManager.authenticate(
+            authManager.authenticate(
                     UsernamePasswordAuthenticationToken(loginData.username, loginData.password)
             )
-            val accessToken = jwtProvider.generateToken(authentication, servletPath)
-            return AuthenticationResponseDto(accessToken, loginData.username)
         } catch (e: Exception) {
             throw SpringRedditException("Invalid username/password")
         }
-
+        val user = userRepo.findByUsername(loginData.username)!!
+        val accessToken = jwtProvider.generateAccessToken(user.username, servletPath, listOf("User"))
+        return  AuthenticationResponseDto(accessToken, user.username)
     }
 
     // 60 min expiry time
