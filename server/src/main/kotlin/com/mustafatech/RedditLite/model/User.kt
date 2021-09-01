@@ -27,5 +27,5 @@ data class User(
 
         val createdDate: Instant,
 
-        val enabled: Boolean
+        var enabled: Boolean
 )

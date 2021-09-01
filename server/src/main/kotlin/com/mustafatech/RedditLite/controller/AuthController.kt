@@ -4,10 +4,7 @@ import com.mustafatech.RedditLite.dto.RegisterRequestDto
 import com.mustafatech.RedditLite.service.AuthService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/auth")
@@ -18,4 +15,11 @@ class AuthController(val authService: AuthService) {
         authService.signup(registerRequest)
         return ResponseEntity.ok("User Registration Successful")
     }
+
+    @GetMapping("/accountVerification/{token}")
+    fun verifyAccount(@PathVariable token: String): ResponseEntity<String> {
+        authService.verifyAccount(token)
+        return ResponseEntity.ok("Account Activated Successfuly")
+    }
+
 }
