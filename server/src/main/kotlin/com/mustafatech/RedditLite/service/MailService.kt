@@ -7,6 +7,7 @@ import org.springframework.mail.MailException
 import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.mail.javamail.MimeMessageHelper
 import org.springframework.mail.javamail.MimeMessagePreparator
+import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Service
 import javax.mail.event.MailEvent
 
@@ -15,6 +16,7 @@ class MailService(val mailSender: JavaMailSender, val mailContentBuilder: MailCo
 
     private val logger = LoggerFactory.getLogger(this.javaClass)
 
+    @Async
     fun sendMail(notificationEmail: NotificationEmail) {
         val msgPreparator = MimeMessagePreparator { mimeMessage ->
             val msgHelper = MimeMessageHelper(mimeMessage)
