@@ -1,15 +1,18 @@
 package com.mustafatech.RedditLite.config
 
 import org.springframework.context.annotation.Bean
+import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
+import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 
 @EnableWebSecurity
-class SecurityConfig : WebSecurityConfigurerAdapter() {
+class SecurityConfig(val userDetailsService: UserDetailsService,
+                     val passwordEncoder: PasswordEncoder) : WebSecurityConfigurerAdapter() {
 
     //csrf attacks are common if there are sessions and cookies but we are building a stateless rest api
     //without sessions (USING jwt) so can disable
@@ -23,11 +26,11 @@ class SecurityConfig : WebSecurityConfigurerAdapter() {
     }
 
     override fun configure(auth: AuthenticationManagerBuilder) {
-        super.configure(auth)
+        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder)
     }
 
     @Bean
-    fun passwordEncoder(): PasswordEncoder{
-        return BCryptPasswordEncoder()
+    fun authManager(): AuthenticationManager{
+        return super.authenticationManagerBean()
     }
 }
