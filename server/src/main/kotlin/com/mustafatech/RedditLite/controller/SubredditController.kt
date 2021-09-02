@@ -20,4 +20,9 @@ class SubredditController(val subredditService: SubredditService){
         return ResponseEntity.ok(subredditService.getAll())
     }
 
+    @GetMapping("/{id}")
+    fun getSubreddit(@PathVariable id: Long): ResponseEntity<SubredditDto>{
+        return ResponseEntity.ok(subredditService.getSubreddit(id))
+    }
+
 }
