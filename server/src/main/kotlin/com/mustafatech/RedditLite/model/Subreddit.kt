@@ -1,14 +1,17 @@
 package com.mustafatech.RedditLite.model
 
+import lombok.Builder
 import java.time.Instant
+import java.util.*
 import javax.persistence.*
 import javax.validation.constraints.NotBlank
 
 @Entity
+@Builder
 data class Subreddit(
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
-        val id: Long?,
+        val id: Long? = null,
 
         @NotBlank(message = "Community name is required")
         val name: String,
@@ -17,10 +20,10 @@ data class Subreddit(
         val description: String,
 
         @OneToMany(fetch = FetchType.LAZY)
-        val posts: List<Post>,
+        val posts: List<Post> = LinkedList(),
 
-        val createdDate: Instant,
+        val createdDate: Instant? = null,
 
         @ManyToOne(fetch = FetchType.LAZY)
-        val user: User
+        val user: User? = null
 )
