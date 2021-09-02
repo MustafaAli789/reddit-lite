@@ -10,14 +10,18 @@ import com.mustafatech.RedditLite.model.VerificationToken
 import com.mustafatech.RedditLite.repository.UserRepo
 import com.mustafatech.RedditLite.repository.VerificationTokenRepository
 import com.mustafatech.RedditLite.security.JwtProvider
+import org.springframework.security.authentication.AnonymousAuthenticationToken
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.Instant
 import java.util.*
+
 
 @Service
 class AuthService(val passEncoder: PasswordEncoder,
@@ -26,6 +30,18 @@ class AuthService(val passEncoder: PasswordEncoder,
                   val authManager: AuthenticationManager,
                   val mailService: MailService,
                   val jwtProvider: JwtProvider) {
+
+    @Transactional(readOnly = true)
+    fun getCurrentUser(): User {
+        val username = SecurityContextHolder.getContext().authentication.principal as String
+        return userRepo.findByUsername(username)
+                ?: throw UsernameNotFoundException("User name not found - " + username)
+    }
+
+    fun isLoggedIn(): Boolean {
+        val authentication: Authentication = SecurityContextHolder.getContext().authentication
+        return authentication !is AnonymousAuthenticationToken && authentication.isAuthenticated()
+    }
 
     @Transactional
     fun signup(registerRequestDto: RegisterRequestDto) {

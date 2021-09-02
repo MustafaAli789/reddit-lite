@@ -2,6 +2,7 @@ package com.mustafatech.RedditLite.service
 
 import com.mustafatech.RedditLite.dto.SubredditDto
 import com.mustafatech.RedditLite.exception.SpringRedditException
+import com.mustafatech.RedditLite.exception.SubredditNotFoundException
 import com.mustafatech.RedditLite.model.Subreddit
 import com.mustafatech.RedditLite.repository.SubredditRepo
 import org.springframework.stereotype.Service
@@ -34,7 +35,7 @@ class SubredditService(val subredditRepo: SubredditRepo) {
     @Transactional(readOnly = true)
     fun getSubreddit(id: Long): SubredditDto{
         val subreddit = subredditRepo.findById(id).orElseThrow {
-            SpringRedditException("No subreddit found with id $id")
+            SubredditNotFoundException("No subreddit found with id $id")
         }
         return SubredditDto(subreddit.id, subreddit.name, subreddit.description, subreddit.posts.size)
     }
