@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.mustafatech.RedditLite.exception.SpringRedditException
 import org.springframework.http.HttpHeaders.AUTHORIZATION
+import org.springframework.security.authentication.BadCredentialsException
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
@@ -34,7 +35,7 @@ class AuthorizationFilter(val jwtProvider: JwtProvider) : OncePerRequestFilter()
 
                     SecurityContextHolder.getContext().authentication = authToken
                     fc.doFilter(req, res)
-                } catch (e: Exception) {
+                } catch (e: BadCredentialsException) {
                     logger.error("Error logging in: " + e.message)
                     throw SpringRedditException("Error logging in")
                 }
