@@ -37,11 +37,11 @@ class PostService(val subredditRepo: SubredditRepo,
                 post.user.username, post.subreddit.name, post.voteCount,
                 commentCount, duration, false, false
         )
-        val voteType = voteRepo.findTopByPostAndUserOrderByVoteIdDesc(post, authService.getCurrentUser())
-        if (voteType != null) {
-            if (voteType.equals(VoteType.UPVOTE)) {
+        val vote = voteRepo.findTopByPostAndUserOrderByVoteIdDesc(post, authService.getCurrentUser())
+        if (vote != null) {
+            if (vote.voteType == (VoteType.UPVOTE)) {
                 postResponseDto.upVote = true
-            } else if (voteType.equals(VoteType.DOWNVOTE)) {
+            } else if (vote.voteType == VoteType.DOWNVOTE) {
                 postResponseDto.downVote = true
             }
         }
