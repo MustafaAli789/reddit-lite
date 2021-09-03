@@ -2,6 +2,7 @@ package com.mustafatech.RedditLite.config
 
 import com.mustafatech.RedditLite.security.AuthorizationFilter
 import org.springframework.context.annotation.Bean
+import org.springframework.http.HttpMethod
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -21,12 +22,26 @@ class SecurityConfig(val userDetailsService: UserDetailsService,
     //csrf attacks are common if there are sessions and cookies but we are building a stateless rest api
     //without sessions (USING jwt) so can disable
     override fun configure(http: HttpSecurity) {
-        http.csrf().disable()
+        http.cors().and()
+                .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/api/auth/**")
                 .permitAll()
+                .antMatchers(HttpMethod.GET, "/api/subreddit")
+                .permitAll()
+                .antMatchers(HttpMethod.GET, "/api/posts/")
+                .permitAll()
+                .antMatchers(HttpMethod.GET, "/api/posts/**")
+                .permitAll()
+                .antMatchers("/v2/api-docs",
+                        "/configuration/ui",
+                        "/swagger-resources/**",
+                        "/configuration/security",
+                        "/swagger-ui.html",
+                        "/webjars/**")
+                .permitAll()
                 .anyRequest()
-                .authenticated()
+                .authenticated();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
         //spring will first check for token before trying tthe username authenticaion scheme i.e before checking if authenticated
