@@ -5,6 +5,8 @@ import com.mustafatech.RedditLite.dto.LoginRequestDto
 import com.mustafatech.RedditLite.dto.RefreshTokenRequestDto
 import com.mustafatech.RedditLite.dto.RegisterRequestDto
 import com.mustafatech.RedditLite.service.AuthService
+import com.mustafatech.RedditLite.service.RefreshTokenService
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import javax.servlet.http.HttpServletRequest
@@ -13,7 +15,7 @@ import javax.validation.Valid
 
 @RestController
 @RequestMapping("/api/auth")
-class AuthController(val authService: AuthService) {
+class AuthController(val authService: AuthService, val refreshTokenService: RefreshTokenService) {
 
     @PostMapping("/signup")
     fun signup(@RequestBody registerRequest: RegisterRequestDto): ResponseEntity<Any> {
@@ -37,6 +39,12 @@ class AuthController(val authService: AuthService) {
     fun refreshTokens(@RequestBody refreshTokenRequest:
                       @Valid RefreshTokenRequestDto, req: HttpServletRequest): ResponseEntity<AuthenticationResponseDto> {
         return ResponseEntity.ok(authService.refreshToken(refreshTokenRequest, req.servletPath))
+    }
+
+    @PostMapping("/logout")
+    fun logout(@RequestBody refreshTokenRequest: @Valid RefreshTokenRequestDto): ResponseEntity<String?>? {
+        refreshTokenService.deleteRefreshToken(refreshTokenRequest.refreshToken)
+        return ResponseEntity.status(HttpStatus.OK).body<String>("Refresh Token Deleted Successfully!!")
     }
 
 
