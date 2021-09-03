@@ -25,6 +25,8 @@ class VoteService(val voteRepo: VoteRepo,
         val voteByPostAndUser = voteRepo.findTopByPostAndUserOrderByVoteIdDesc(post, authService.getCurrentUser())
         if (voteByPostAndUser !== null && voteByPostAndUser.voteType == voteDto.voteType) {
             throw SpringRedditException("You have already " + voteDto.voteType + "'d for this post")
+        } else if (voteByPostAndUser !== null) { //user is changing their vote existing vote to opp
+            post.voteCount -= voteByPostAndUser.voteType.dir
         }
         if (VoteType.UPVOTE == voteDto.voteType) {
             post.voteCount += 1
