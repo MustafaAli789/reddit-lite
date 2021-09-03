@@ -15,8 +15,15 @@ class JwtProvider {
     //Should preferably not be hardcoded here
     private val algorithm = Algorithm.HMAC256("YOUR_SECRET_HERE")
 
-    //10 min default
-    private val JWT_LIFESPAN = 10*60*1000
+    //Default 10 mins
+    private val JWT_LIFESPAN = 10*1000
+
+    companion object{
+
+        //100 mins default
+        val REFRESH_LIFESPAN: Long = 100*60*1000
+    }
+
 
     fun generateAccessToken(username: String, issuer: String, authorities: List<String>): String {
         return createJWT(issuer, username, authorities)
