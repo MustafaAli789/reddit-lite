@@ -2,6 +2,7 @@ package com.mustafatech.RedditLite.service
 
 import com.mustafatech.RedditLite.dto.AuthenticationResponseDto
 import com.mustafatech.RedditLite.dto.LoginRequestDto
+import com.mustafatech.RedditLite.dto.RefreshTokenRequestDto
 import com.mustafatech.RedditLite.dto.RegisterRequestDto
 import com.mustafatech.RedditLite.exception.SpringRedditException
 import com.mustafatech.RedditLite.model.NotificationEmail
@@ -29,7 +30,8 @@ class AuthService(val passEncoder: PasswordEncoder,
                   val verificationTokenRepository: VerificationTokenRepository,
                   val authManager: AuthenticationManager,
                   val mailService: MailService,
-                  val jwtProvider: JwtProvider) {
+                  val jwtProvider: JwtProvider,
+                  val refreshTokenService: RefreshTokenService) {
 
     @Transactional(readOnly = true)
     fun getCurrentUser(): User {
@@ -71,7 +73,10 @@ class AuthService(val passEncoder: PasswordEncoder,
         }
         val user = userRepo.findByUsername(loginData.username)!!
         val accessToken = jwtProvider.generateAccessToken(user.username, servletPath, listOf("User"))
-        return  AuthenticationResponseDto(accessToken, user.username)
+        return  AuthenticationResponseDto(
+                accessToken, user.username, refreshTokenService.generateRefreshToken(user).token,
+                Instant.now().plusMillis(JwtProvider.REFRESH_LIFESPAN)
+        )
     }
 
     // 60 min expiry time
@@ -96,6 +101,15 @@ class AuthService(val passEncoder: PasswordEncoder,
         val user = userRepo.findByUsername(username)?: throw SpringRedditException("User with name $username not found")
         user.enabled = true
         userRepo.save(user)
+    }
+
+    fun refreshToken(refreshTokenRequest: RefreshTokenRequestDto, servletPath: String): AuthenticationResponseDto {
+        val username = refreshTokenService.validateRefreshToken(refreshTokenRequest.refreshToken)
+        val newAccessToken = jwtProvider.generateAccessToken(username, servletPath, listOf("User"))
+        return AuthenticationResponseDto(
+            newAccessToken, username, refreshTokenRequest.refreshToken,
+                Instant.now().plusMillis(JwtProvider.REFRESH_LIFESPAN)
+        )
     }
 
 }
