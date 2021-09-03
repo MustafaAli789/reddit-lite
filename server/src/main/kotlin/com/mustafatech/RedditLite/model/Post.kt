@@ -23,7 +23,7 @@ data class Post(
         @Lob
         val description: String,
 
-        val voteCount: Int = 0,
+        var voteCount: Int = 0,
 
         @ManyToOne(fetch = FetchType.LAZY)
         @JoinColumn(name = "userId", referencedColumnName = "userId")
