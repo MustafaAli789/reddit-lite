@@ -16,7 +16,7 @@ class PostController(val postService: PostService) {
     @PostMapping
     fun createPost(@RequestBody postRequest: PostRequestDto): ResponseEntity<PostResponseDto> {
         val postResponseDto = postService.save(postRequest)
-        return ResponseEntity.status(201).body(postResponseDto)
+        return status(HttpStatus.CREATED).body(postResponseDto)
     }
 
     @GetMapping
