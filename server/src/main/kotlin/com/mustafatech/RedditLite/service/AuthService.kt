@@ -35,12 +35,12 @@ class AuthService(val passEncoder: PasswordEncoder,
     fun getCurrentUser(): User {
         val username = SecurityContextHolder.getContext().authentication.principal as String
         return userRepo.findByUsername(username)
-                ?: throw UsernameNotFoundException("User name not found - " + username)
+                ?: throw UsernameNotFoundException("User name not found - $username")
     }
 
     fun isLoggedIn(): Boolean {
         val authentication: Authentication = SecurityContextHolder.getContext().authentication
-        return authentication !is AnonymousAuthenticationToken && authentication.isAuthenticated()
+        return authentication !is AnonymousAuthenticationToken && authentication.isAuthenticated
     }
 
     @Transactional
