@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { EventEmitter, Injectable, Output } from '@angular/core';
 import { LocalStorageService } from 'ngx-webstorage';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators'
+import { Observable, throwError } from 'rxjs';
+import { map, tap } from 'rxjs/operators'
 import { LoginResponse } from '../login/login-response.payload';
 import { LoginRequestPayload } from '../login/loginrequest.payload';
 import { SignUpRequestPayload } from '../signup/signup-request.payload';
