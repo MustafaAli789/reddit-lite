@@ -14,7 +14,12 @@ import { CreatePostPayload } from './create-post.payload';
 })
 export class CreatePostComponent implements OnInit {
 
-  createPostForm?: FormGroup;
+  createPostForm: FormGroup = new FormGroup({
+    postName: new FormControl('', Validators.required),
+    subredditName: new FormControl('', Validators.required),
+    url: new FormControl('', Validators.required),
+    description: new FormControl('', Validators.required),
+  });
   postPayload: CreatePostPayload;
   subreddits: Array<SubredditModel> = [];
 
@@ -29,12 +34,6 @@ export class CreatePostComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.createPostForm = new FormGroup({
-      postName: new FormControl('', Validators.required),
-      subredditName: new FormControl('', Validators.required),
-      url: new FormControl('', Validators.required),
-      description: new FormControl('', Validators.required),
-    });
     this.subredditService.getAllSubreddits().subscribe((data) => {
       this.subreddits = data;
     }, error => {

@@ -12,7 +12,11 @@ import { SignUpRequestPayload } from './signup-request.payload';
 })
 export class SignupComponent implements OnInit {
 
-  signupForm?: FormGroup
+  signupForm: FormGroup = new FormGroup({
+    username: new FormControl('', Validators.required),
+    email: new FormControl('', [Validators.required, Validators.email]),
+    password: new FormControl('', Validators.required)
+  });
   signUpRequestPayload: SignUpRequestPayload = {
     username: '',
     email: '',
@@ -22,11 +26,6 @@ export class SignupComponent implements OnInit {
   constructor(private authService: AuthService, private router: Router, private toastr: ToastrService) { }
 
   ngOnInit(): void {
-    this.signupForm = new FormGroup({
-      username: new FormControl('', Validators.required),
-      email: new FormControl('', [Validators.required, Validators.email]),
-      password: new FormControl('', Validators.required)
-    });
   }
 
   signup() {
