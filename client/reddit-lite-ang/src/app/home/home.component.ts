@@ -1,23 +1,34 @@
 import { Component, OnInit } from '@angular/core';
-import { PostModel } from '../shared/post-model';
-import { PostService } from '../shared/post.service';
+import { faUser } from '@fortawesome/free-solid-svg-icons';
+import { AuthService } from '../auth/shared/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  selector: 'app-header',
+  templateUrl: './header.component.html',
+  styleUrls: ['./header.component.css']
 })
-export class HomeComponent implements OnInit {
+export class HeaderComponent implements OnInit {
+  faUser = faUser;
+  isLoggedIn?: boolean;
+  username?: string;
 
-  posts: Array<PostModel> = [];
+  constructor(private authService: AuthService, private router: Router) { }
 
-  constructor(private postService: PostService) {
+  ngOnInit() {
+    this.authService.loggedIn.subscribe((data: boolean) => this.isLoggedIn = data);
+    this.authService.username.subscribe((data: string) => this.username = data);
+    this.isLoggedIn = this.authService.isLoggedIn();
+    this.username = this.authService.getUserName();
   }
 
-  ngOnInit(): void {
-    this.postService.getAllPosts().subscribe(post => {
-      this.posts = post;
-    });
+  goToUserProfile() {
+    this.router.navigateByUrl('/user-profile/' + this.username);
   }
 
+  logout() {
+    this.authService.logout();
+    this.isLoggedIn = false;
+    this.router.navigateByUrl('');
+  }
 }
