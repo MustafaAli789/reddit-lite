@@ -16,7 +16,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class VoteButtonComponent implements OnInit {
 
-  @Input() post: PostModel = {};
+  @Input() post: PostModel = {id: 0};
   votePayload: VotePayload;
   faArrowUp = faArrowUp;
   faArrowDown = faArrowDown;

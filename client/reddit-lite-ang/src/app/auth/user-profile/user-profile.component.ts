@@ -12,10 +12,10 @@ import { CommentPayload } from 'src/app/comment/comment.payload';
 })
 export class UserProfileComponent implements OnInit {
   name: string;
-  posts: PostModel[];
-  comments: CommentPayload[];
-  postLength: number;
-  commentLength: number;
+  posts: PostModel[] = [];
+  comments: CommentPayload[] = [];
+  postLength?: number;
+  commentLength?: number;
 
   constructor(private activatedRoute: ActivatedRoute, private postService: PostService,
     private commentService: CommentService) {

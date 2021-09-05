@@ -13,7 +13,10 @@ import { LoginRequestPayload } from './loginrequest.payload';
 })
 export class LoginComponent implements OnInit {
 
-  loginForm?: FormGroup;
+  loginForm: FormGroup = new FormGroup({
+    username: new FormControl('', Validators.required),
+    password: new FormControl('', Validators.required)
+  })
   registerSuccessMessage = ""
   isError: boolean = false
   loginReqPayload: LoginRequestPayload = {
@@ -25,10 +28,6 @@ export class LoginComponent implements OnInit {
     private toastr: ToastrService, private activatedRoute: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.loginForm = new FormGroup({
-      username: new FormControl('', Validators.required),
-      password: new FormControl('', Validators.required)
-    })
     this.activatedRoute.queryParams
       .subscribe(params => {
         if (params['registered'] !== undefined && params['registered'] === 'true') {
