@@ -18,7 +18,9 @@ import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 import { VoteButtonComponent } from './shared/vote-button/vote-button.component';
 import { SideBarComponent } from './shared/side-bar/side-bar.component';
 import { SubredditSideBarComponent } from './shared/subreddit-side-bar/subreddit-side-bar.component';
-import { PostTileComponent } from './shared/post-tile/post-tile.component'
+import { PostTileComponent } from './shared/post-tile/post-tile.component';
+import { CreateSubredditComponent } from './subreddit/create-subreddit/create-subreddit.component';
+import { ListSubredditComponent } from './subreddit/list-subreddit/list-subreddit.component'
 
 @NgModule({
   declarations: [
@@ -31,7 +33,9 @@ import { PostTileComponent } from './shared/post-tile/post-tile.component'
     VoteButtonComponent,
     SideBarComponent,
     SubredditSideBarComponent,
-    PostTileComponent
+    PostTileComponent,
+    CreateSubredditComponent,
+    ListSubredditComponent
   ],
   imports: [
     BrowserModule,
