@@ -1,10 +1,10 @@
+import { Injectable, Output, EventEmitter } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { EventEmitter, Injectable, Output } from '@angular/core';
-import { LocalStorageService } from 'ngx-webstorage';
 import { Observable, throwError } from 'rxjs';
-import { map, tap } from 'rxjs/operators'
-import { LoginResponse } from '../login/login-response.payload';
+import { LocalStorageService } from 'ngx-webstorage';
 import { LoginRequestPayload } from '../login/loginrequest.payload';
+import { LoginResponse } from '../login/login-response.payload';
+import { map, tap } from 'rxjs/operators';
 import { SignUpRequestPayload } from '../signup/signup-request.payload';
 
 @Injectable({
@@ -20,24 +20,28 @@ export class AuthService {
     username: this.getUserName()
   }
 
-  constructor(private httpClient: HttpClient, private localStorage: LocalStorageService) { }
-
-  signup(signUpRequestPayload: SignUpRequestPayload):Observable<any> {
-    return this.httpClient.post('http://localhost:8080/api/auth/signup', signUpRequestPayload, {responseType: 'text'})
+  constructor(private httpClient: HttpClient,
+    private localStorage: LocalStorageService) {
   }
-  login(loginReq: LoginRequestPayload): Observable<boolean> {
-    return this.httpClient.post<LoginResponse>('http://localhost:8080/api/auth/login', loginReq)
-      .pipe(
-        map(data => {
-          this.localStorage.store("authenticationToken", data.authenticationToken)
-          this.localStorage.store("username", data.username)
-          this.localStorage.store("refreshToken", data.refreshToken)
-          this.localStorage.store("expiresAt", data.expiresAt)
 
-          return true
-        })
-      )
+  signup(signupRequestPayload: SignUpRequestPayload): Observable<any> {
+    return this.httpClient.post('http://localhost:8080/api/auth/signup', signupRequestPayload, { responseType: 'text' });
   }
+
+  login(loginRequestPayload: LoginRequestPayload): Observable<boolean> {
+    return this.httpClient.post<LoginResponse>('http://localhost:8080/api/auth/login',
+      loginRequestPayload).pipe(map(data => {
+        this.localStorage.store('authenticationToken', data.authenticationToken);
+        this.localStorage.store('username', data.username);
+        this.localStorage.store('refreshToken', data.refreshToken);
+        this.localStorage.store('expiresAt', data.expiresAt);
+
+        this.loggedIn.emit(true);
+        this.username.emit(data.username);
+        return true;
+      }));
+  }
+
   getJwtToken() {
     return this.localStorage.retrieve('authenticationToken');
   }
