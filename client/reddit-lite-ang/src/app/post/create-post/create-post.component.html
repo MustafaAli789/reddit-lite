@@ -13,7 +13,7 @@
   
             <select class="form-control" style="margin-top: 10px" [formControlName]="'subredditName'">
               <option value="" selected disabled>Select Subreddit</option>
-              <option *ngFor="let subreddit of subreddits">{{subreddit.name}}</option>
+              <option *ngFor="let subreddit of subreddits">{{subreddit.subredditName}}</option>
             </select>
   
             <editor [formControlName]="'description'" [init]="{

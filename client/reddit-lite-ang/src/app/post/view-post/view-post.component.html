@@ -12,7 +12,7 @@
               <span> . Posted
                 <span> {{post?.duration}} </span>
                 by              
-                <a class="username" href="">{{post?.userName}}</a>
+                <a class="username" href="/user-profile/{{post?.userName}}">{{post?.userName}}</a>
               </span>
             </span>
             <hr />
@@ -20,7 +20,7 @@
             <div>
               <p class="post-text" [innerHtml]="post?.description"></p>
             </div>
-            <div class="post-comment">
+            <div class="post-comment" [style.display]="loggedIn ? '':'none'">
               <form [formGroup]="commentForm" (ngSubmit)="postComment()">
                 <div class="form-group">
                   <textarea class="form-control" [formControlName]="'text'" placeholder="Your Thoughts?"></textarea>
@@ -34,7 +34,7 @@
                   <a routerLink="/user/comment.username">{{comment?.username}}</a>
                 </div>
                 <div>
-                  <p>{{comment?.duration}}</p>
+                  <p>{{comment?.createdDate | utcdate}}</p>
                 </div>
                 <b>{{comment?.text}}</b>
               </div>

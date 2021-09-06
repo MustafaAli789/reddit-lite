@@ -25,6 +25,7 @@ import { EditorModule } from '@tinymce/tinymce-angular';
 import { ViewPostComponent } from './post/view-post/view-post.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { UserProfileComponent } from './auth/user-profile/user-profile.component';
+import { UtcdatePipe } from './common/utcdate.pipe';
 
 @NgModule({
   declarations: [
@@ -41,19 +42,20 @@ import { UserProfileComponent } from './auth/user-profile/user-profile.component
     CreateSubredditComponent,
     ListSubredditsComponent,
     ViewPostComponent,
-    UserProfileComponent
+    UserProfileComponent,
+    UtcdatePipe
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
     HttpClientModule,
-    NgxWebstorageModule.forRoot(),
-    BrowserAnimationsModule,
-    ToastrModule.forRoot(),
-    FontAwesomeModule,
-    EditorModule,
-    NgbModule
+    NgxWebstorageModule.forRoot(), //localstorage access
+    BrowserAnimationsModule, //toasts animations
+    ToastrModule.forRoot(), //toasts
+    FontAwesomeModule, //font awesome icns
+    EditorModule, //tiny mce
+    NgbModule //ng bootstrap
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,
