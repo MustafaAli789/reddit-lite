@@ -1,6 +1,6 @@
 export class SubredditModel {
     id?: number;
-    name?: string;
+    subredditName?: string;
     description?: string;
     numberOfPosts?: number;
 }

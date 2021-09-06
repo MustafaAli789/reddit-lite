@@ -1,6 +1,6 @@
-export class CommentPayload{
-    text?: string;
-    postId?: number;
-    username?:string;
-    duration?: string;
+export interface CommentPayload{
+    text: string;
+    postId: number;
+    username:string;
+    createdDate?: number;
 }

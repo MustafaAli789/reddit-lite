@@ -15,11 +15,8 @@
     </div>
     <div *ngFor="let comment of comments">
       <div class="comment">
-        <div class="username">
-          <a routerLink="/user/comment.username">{{comment.username}}</a>
-        </div>
         <div>
-          <p>{{comment.duration}}</p>
+          <p>{{comment.createdDate | utcdate}}</p>
         </div>
         <b>{{comment.text}}</b>
       </div>
