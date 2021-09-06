@@ -33,6 +33,8 @@ class SecurityConfig(val userDetailsService: UserDetailsService,
                 .permitAll()
                 .antMatchers(HttpMethod.GET, "/api/posts/**")
                 .permitAll()
+                .antMatchers(HttpMethod.GET, "/api/comments/by-post/**")
+                .permitAll()
                 .antMatchers("/v2/api-docs",
                         "/configuration/ui",
                         "/swagger-resources/**",

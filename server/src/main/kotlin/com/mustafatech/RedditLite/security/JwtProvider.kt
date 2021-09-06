@@ -16,7 +16,7 @@ class JwtProvider {
     private val algorithm = Algorithm.HMAC256("YOUR_SECRET_HERE")
 
     //Default 10 mins
-    private val JWT_LIFESPAN = 10*1000
+    private val JWT_LIFESPAN = 10*60*1000
 
     companion object{
 
