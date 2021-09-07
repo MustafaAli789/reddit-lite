@@ -22,8 +22,7 @@ class SecurityConfig(val userDetailsService: UserDetailsService,
     //csrf attacks are common if there are sessions and cookies but we are building a stateless rest api
     //without sessions (USING jwt) so can disable
     override fun configure(http: HttpSecurity) {
-        http.cors().and()
-                .csrf().disable()
+        http.cors().and().csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/**")
                 .permitAll()
