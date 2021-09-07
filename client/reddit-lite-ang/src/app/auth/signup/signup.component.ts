@@ -30,8 +30,8 @@ export class SignupComponent implements OnInit {
 
   signup() {
     this.signUpRequestPayload.email = this.signupForm?.get('email')?.value
-    this.signUpRequestPayload.password = this.signupForm?.get('username')?.value
-    this.signUpRequestPayload.username = this.signupForm?.get('password')?.value
+    this.signUpRequestPayload.username = this.signupForm?.get('username')?.value
+    this.signUpRequestPayload.password = this.signupForm?.get('password')?.value
     this.authService.signup(this.signUpRequestPayload)
       .subscribe(
         () => {

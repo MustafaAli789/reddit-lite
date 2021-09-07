@@ -11,7 +11,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 
 
 @Configuration
-@EnableWebMvc
 class WebConfig : WebMvcConfigurer {
 
     override fun addCorsMappings(registry: CorsRegistry) {
@@ -34,11 +33,6 @@ class WebConfig : WebMvcConfigurer {
                 .addResourceLocations("classpath:/META-INF/resources/")
         registry.addResourceHandler("/webjars/**")
                 .addResourceLocations("classpath:/META-INF/resources/webjars/")
-        registry.addResourceHandler("/**")
-                .addResourceLocations("classpath:/META-INF/resources/")
-                .addResourceLocations("classpath:/resources/")
-                .addResourceLocations("classpath:/static/")
-                .addResourceLocations("classpath:/public/")
     }
 
 }
