@@ -6,8 +6,8 @@ Will expect to use Firebase cloud storage for media storage along with websocket
 Deployed to heroku at: https://reddit-lite-ang.herokuapp.com/
 
 This project is using a dummy SMTP server so emails wont actually be recieved by anyone except for me. You can use the following test account however:
-Username: TestUser4
-Password: password5
+- Username: TestUser4
+- Password: password5
 
 ### Todo
 - Verification token expiry date
