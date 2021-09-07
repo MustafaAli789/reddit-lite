@@ -25,6 +25,8 @@ class SecurityConfig(val userDetailsService: UserDetailsService,
         http.cors().and()
                 .csrf().disable()
                 .authorizeRequests()
+                .antMatchers("/**")
+                .permitAll()
                 .antMatchers("/api/auth/**")
                 .permitAll()
                 .antMatchers(HttpMethod.GET, "/api/subreddit")

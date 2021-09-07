@@ -1,5 +1,6 @@
 package com.mustafatech.RedditLite.service
 
+import com.mustafatech.RedditLite.config.AppConfig
 import com.mustafatech.RedditLite.dto.AuthenticationResponseDto
 import com.mustafatech.RedditLite.dto.LoginRequestDto
 import com.mustafatech.RedditLite.dto.RefreshTokenRequestDto
@@ -31,7 +32,8 @@ class AuthService(val passEncoder: PasswordEncoder,
                   val authManager: AuthenticationManager,
                   val mailService: MailService,
                   val jwtProvider: JwtProvider,
-                  val refreshTokenService: RefreshTokenService) {
+                  val refreshTokenService: RefreshTokenService,
+                  val appConfig: AppConfig) {
 
     @Transactional(readOnly = true)
     fun getCurrentUser(): User {
@@ -59,7 +61,7 @@ class AuthService(val passEncoder: PasswordEncoder,
                 "Please Activate your Account",
                 user.email,
                 "Thank you for signing up to RedditLite. Please click the link below to activate your account :" +
-                        "http://localhost:8080/api/auth/accountVerification/" + token
+                        "${appConfig.url}/api/auth/accountVerification/" + token
         ))
     }
 
