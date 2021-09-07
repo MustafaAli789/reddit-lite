@@ -6,6 +6,7 @@ import { LoginRequestPayload } from '../login/loginrequest.payload';
 import { LoginResponse } from '../login/login-response.payload';
 import { map, tap } from 'rxjs/operators';
 import { SignUpRequestPayload } from '../signup/signup-request.payload';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +15,8 @@ export class AuthService {
 
   @Output() loggedIn: EventEmitter<boolean> = new EventEmitter();
   @Output() username: EventEmitter<string> = new EventEmitter();
+
+  baseUrl = environment.baseUrl
 
   refreshTokenPayload = {
     refreshToken: this.getRefreshToken(),
@@ -25,11 +28,11 @@ export class AuthService {
   }
 
   signup(signupRequestPayload: SignUpRequestPayload): Observable<any> {
-    return this.httpClient.post('/api/auth/signup', signupRequestPayload, { responseType: 'text' });
+    return this.httpClient.post(this.baseUrl+'/api/auth/signup', signupRequestPayload, { responseType: 'text' });
   }
 
   login(loginRequestPayload: LoginRequestPayload): Observable<boolean> {
-    return this.httpClient.post<LoginResponse>('/api/auth/login',
+    return this.httpClient.post<LoginResponse>(this.baseUrl+'/api/auth/login',
       loginRequestPayload).pipe(map(data => {
         this.localStorage.store('authenticationToken', data.authenticationToken);
         this.localStorage.store('username', data.username);
@@ -47,7 +50,7 @@ export class AuthService {
   }
 
   refreshToken() {
-    return this.httpClient.post<LoginResponse>('/api/auth/refresh/token',
+    return this.httpClient.post<LoginResponse>(this.baseUrl+'/api/auth/refresh/token',
       this.refreshTokenPayload)
       .pipe(tap(response => {
         this.localStorage.clear('authenticationToken');
@@ -60,7 +63,7 @@ export class AuthService {
   }
 
   logout() {
-    this.httpClient.post('/api/auth/logout', this.refreshTokenPayload,
+    this.httpClient.post(this.baseUrl+'/api/auth/logout', this.refreshTokenPayload,
       { responseType: 'text' })
       .subscribe(data => {
         console.log(data);
